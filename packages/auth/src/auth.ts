@@ -7,7 +7,6 @@ import { openAPI } from 'better-auth/plugins';
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
-
     schema: schema,
   }),
   plugins: [openAPI()],
@@ -19,6 +18,17 @@ export const auth = betterAuth({
   ].filter(Boolean),
   emailAndPassword: {
     enabled: true,
+    autoSignIn: true,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, token, url }) => {
+      console.table([
+        ['Sending verification email to', user.email],
+        ['Token:', token],
+        ['URL:', url],
+      ]);
+    },
   },
   secret: process.env.BETTER_AUTH_SECRET,
   baseURL: process.env.BETTER_AUTH_URL,

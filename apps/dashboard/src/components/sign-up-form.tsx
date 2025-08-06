@@ -72,11 +72,12 @@ export default function SignUpForm({
           email: formData.email,
           password: formData.password,
           name: formData.name,
+          callbackURL: `${window.location.origin}/projects`,
         },
         {
           onSuccess: () => {
             navigate({
-              to: "/",
+              to: "/confirm-email",
             });
             toast.success("Sign up successful");
           },

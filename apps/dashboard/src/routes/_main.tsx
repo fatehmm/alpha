@@ -1,22 +1,20 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { Suspense } from "react";
+import { getSessionQueryOptions } from "@/query-options/user";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
+import { authClient } from "@/lib/auth-client";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AppHeader } from "@/components/layout/header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { Spinner } from "@/components/ui/spinner";
-import { authClient } from "@/lib/auth-client";
-import { getSessionQueryOptions } from "@/query-options/user";
 
 export const Route = createFileRoute("/_main")({
   component: MainLayout,
   beforeLoad: async () => {
-    console.log("beforeLoad");
     const session = await authClient.getSession();
-    console.log("getsession", session);
-		
+
     if (!session.data) {
       throw redirect({
         href: "/login",
@@ -26,7 +24,6 @@ export const Route = createFileRoute("/_main")({
   },
   loader: async ({ context: { queryClient } }) => {
     const session = await authClient.getSession();
-    console.log("here", session);
     if (session.data) {
       try {
         await queryClient.ensureQueryData(getSessionQueryOptions);

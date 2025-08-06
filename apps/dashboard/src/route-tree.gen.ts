@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as ConfirmEmailImport } from './routes/confirm-email'
 import { Route as MainImport } from './routes/_main'
 import { Route as MainServicesRouteImport } from './routes/_main/services/route'
 import { Route as MainQuizesRouteImport } from './routes/_main/quizes/route'
@@ -36,6 +37,12 @@ const RegisterRoute = RegisterImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ConfirmEmailRoute = ConfirmEmailImport.update({
+  id: '/confirm-email',
+  path: '/confirm-email',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -114,6 +121,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof MainImport
+      parentRoute: typeof rootRoute
+    }
+    '/confirm-email': {
+      id: '/confirm-email'
+      path: '/confirm-email'
+      fullPath: '/confirm-email'
+      preLoaderRoute: typeof ConfirmEmailImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -262,6 +276,7 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
+  '/confirm-email': typeof ConfirmEmailRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/': typeof MainIndexRouteRoute
@@ -277,6 +292,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/confirm-email': typeof ConfirmEmailRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/': typeof MainIndexRouteRoute
@@ -294,6 +310,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_main': typeof MainRouteWithChildren
+  '/confirm-email': typeof ConfirmEmailRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_main/': typeof MainIndexRouteRoute
@@ -312,6 +329,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/confirm-email'
     | '/login'
     | '/register'
     | '/'
@@ -326,6 +344,7 @@ export interface FileRouteTypes {
     | '/services/new/$serviceId'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/confirm-email'
     | '/login'
     | '/register'
     | '/'
@@ -341,6 +360,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_main'
+    | '/confirm-email'
     | '/login'
     | '/register'
     | '/_main/'
@@ -358,12 +378,14 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
+  ConfirmEmailRoute: typeof ConfirmEmailRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
+  ConfirmEmailRoute: ConfirmEmailRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
 }
@@ -379,6 +401,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_main",
+        "/confirm-email",
         "/login",
         "/register"
       ]
@@ -394,6 +417,9 @@ export const routeTree = rootRoute
         "/_main/services",
         "/_main/account/general"
       ]
+    },
+    "/confirm-email": {
+      "filePath": "confirm-email.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
