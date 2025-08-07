@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
   IconBell,
-  IconDashboard,
+  IconBuilding,
   IconHelpOctagon,
   IconLayoutDashboard,
   IconSettings,
@@ -33,9 +33,9 @@ const navMain = [
     icon: IconUser,
   },
   {
-    title: "Projects",
-    url: "projects",
-    icon: IconDashboard,
+    title: "Workspaces",
+    url: "workspaces",
+    icon: IconBuilding,
   },
   {
     title: "Domains",

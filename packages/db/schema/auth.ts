@@ -19,6 +19,8 @@ export const session = pgTable('session', {
   expiresAt: timestamp('expires_at').notNull(),
   token: text('token').notNull().unique(),
   impersonatedBy: text('impersonated_by'),
+  activeOrganizationId: text('active_organization_id'),
+  activeTeamId: text('active_team_id'),
   createdAt: timestamp('created_at').notNull(),
   updatedAt: timestamp('updated_at').notNull(),
   ipAddress: text('ip_address'),

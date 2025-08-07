@@ -15,13 +15,12 @@ import { Route as SetupAdminImport } from './routes/setup-admin'
 import { Route as LoginImport } from './routes/login'
 import { Route as ConfirmEmailImport } from './routes/confirm-email'
 import { Route as MainImport } from './routes/_main'
+import { Route as MainWorkspacesRouteImport } from './routes/_main/workspaces/route'
 import { Route as MainUsersRouteImport } from './routes/_main/users/route'
 import { Route as MainQuizesRouteImport } from './routes/_main/quizes/route'
-import { Route as MainProjectsRouteImport } from './routes/_main/projects/route'
 import { Route as MainNotificationsRouteImport } from './routes/_main/notifications/route'
 import { Route as MainDomainsRouteImport } from './routes/_main/domains/route'
 import { Route as MainIndexRouteImport } from './routes/_main/index/route'
-import { Route as MainProjectsNewRouteImport } from './routes/_main/projects/new/route'
 import { Route as MainAccountGeneralRouteImport } from './routes/_main/account/general/route'
 
 // Create/Update Routes
@@ -49,6 +48,12 @@ const MainRoute = MainImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const MainWorkspacesRouteRoute = MainWorkspacesRouteImport.update({
+  id: '/workspaces',
+  path: '/workspaces',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainUsersRouteRoute = MainUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -58,12 +63,6 @@ const MainUsersRouteRoute = MainUsersRouteImport.update({
 const MainQuizesRouteRoute = MainQuizesRouteImport.update({
   id: '/quizes',
   path: '/quizes',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainProjectsRouteRoute = MainProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -83,12 +82,6 @@ const MainIndexRouteRoute = MainIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MainRoute,
-} as any)
-
-const MainProjectsNewRouteRoute = MainProjectsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => MainProjectsRouteRoute,
 } as any)
 
 const MainAccountGeneralRouteRoute = MainAccountGeneralRouteImport.update({
@@ -150,13 +143,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainNotificationsRouteImport
       parentRoute: typeof MainImport
     }
-    '/_main/projects': {
-      id: '/_main/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof MainProjectsRouteImport
-      parentRoute: typeof MainImport
-    }
     '/_main/quizes': {
       id: '/_main/quizes'
       path: '/quizes'
@@ -171,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainUsersRouteImport
       parentRoute: typeof MainImport
     }
+    '/_main/workspaces': {
+      id: '/_main/workspaces'
+      path: '/workspaces'
+      fullPath: '/workspaces'
+      preLoaderRoute: typeof MainWorkspacesRouteImport
+      parentRoute: typeof MainImport
+    }
     '/_main/account/general': {
       id: '/_main/account/general'
       path: '/account/general'
@@ -178,36 +171,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainAccountGeneralRouteImport
       parentRoute: typeof MainImport
     }
-    '/_main/projects/new': {
-      id: '/_main/projects/new'
-      path: '/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof MainProjectsNewRouteImport
-      parentRoute: typeof MainProjectsRouteImport
-    }
   }
 }
 
 // Create and export the route tree
 
-interface MainProjectsRouteRouteChildren {
-  MainProjectsNewRouteRoute: typeof MainProjectsNewRouteRoute
-}
-
-const MainProjectsRouteRouteChildren: MainProjectsRouteRouteChildren = {
-  MainProjectsNewRouteRoute: MainProjectsNewRouteRoute,
-}
-
-const MainProjectsRouteRouteWithChildren =
-  MainProjectsRouteRoute._addFileChildren(MainProjectsRouteRouteChildren)
-
 interface MainRouteChildren {
   MainIndexRouteRoute: typeof MainIndexRouteRoute
   MainDomainsRouteRoute: typeof MainDomainsRouteRoute
   MainNotificationsRouteRoute: typeof MainNotificationsRouteRoute
-  MainProjectsRouteRoute: typeof MainProjectsRouteRouteWithChildren
   MainQuizesRouteRoute: typeof MainQuizesRouteRoute
   MainUsersRouteRoute: typeof MainUsersRouteRoute
+  MainWorkspacesRouteRoute: typeof MainWorkspacesRouteRoute
   MainAccountGeneralRouteRoute: typeof MainAccountGeneralRouteRoute
 }
 
@@ -215,9 +190,9 @@ const MainRouteChildren: MainRouteChildren = {
   MainIndexRouteRoute: MainIndexRouteRoute,
   MainDomainsRouteRoute: MainDomainsRouteRoute,
   MainNotificationsRouteRoute: MainNotificationsRouteRoute,
-  MainProjectsRouteRoute: MainProjectsRouteRouteWithChildren,
   MainQuizesRouteRoute: MainQuizesRouteRoute,
   MainUsersRouteRoute: MainUsersRouteRoute,
+  MainWorkspacesRouteRoute: MainWorkspacesRouteRoute,
   MainAccountGeneralRouteRoute: MainAccountGeneralRouteRoute,
 }
 
@@ -231,11 +206,10 @@ export interface FileRoutesByFullPath {
   '/': typeof MainIndexRouteRoute
   '/domains': typeof MainDomainsRouteRoute
   '/notifications': typeof MainNotificationsRouteRoute
-  '/projects': typeof MainProjectsRouteRouteWithChildren
   '/quizes': typeof MainQuizesRouteRoute
   '/users': typeof MainUsersRouteRoute
+  '/workspaces': typeof MainWorkspacesRouteRoute
   '/account/general': typeof MainAccountGeneralRouteRoute
-  '/projects/new': typeof MainProjectsNewRouteRoute
 }
 
 export interface FileRoutesByTo {
@@ -245,11 +219,10 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRouteRoute
   '/domains': typeof MainDomainsRouteRoute
   '/notifications': typeof MainNotificationsRouteRoute
-  '/projects': typeof MainProjectsRouteRouteWithChildren
   '/quizes': typeof MainQuizesRouteRoute
   '/users': typeof MainUsersRouteRoute
+  '/workspaces': typeof MainWorkspacesRouteRoute
   '/account/general': typeof MainAccountGeneralRouteRoute
-  '/projects/new': typeof MainProjectsNewRouteRoute
 }
 
 export interface FileRoutesById {
@@ -261,11 +234,10 @@ export interface FileRoutesById {
   '/_main/': typeof MainIndexRouteRoute
   '/_main/domains': typeof MainDomainsRouteRoute
   '/_main/notifications': typeof MainNotificationsRouteRoute
-  '/_main/projects': typeof MainProjectsRouteRouteWithChildren
   '/_main/quizes': typeof MainQuizesRouteRoute
   '/_main/users': typeof MainUsersRouteRoute
+  '/_main/workspaces': typeof MainWorkspacesRouteRoute
   '/_main/account/general': typeof MainAccountGeneralRouteRoute
-  '/_main/projects/new': typeof MainProjectsNewRouteRoute
 }
 
 export interface FileRouteTypes {
@@ -278,11 +250,10 @@ export interface FileRouteTypes {
     | '/'
     | '/domains'
     | '/notifications'
-    | '/projects'
     | '/quizes'
     | '/users'
+    | '/workspaces'
     | '/account/general'
-    | '/projects/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/confirm-email'
@@ -291,11 +262,10 @@ export interface FileRouteTypes {
     | '/'
     | '/domains'
     | '/notifications'
-    | '/projects'
     | '/quizes'
     | '/users'
+    | '/workspaces'
     | '/account/general'
-    | '/projects/new'
   id:
     | '__root__'
     | '/_main'
@@ -305,11 +275,10 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/_main/domains'
     | '/_main/notifications'
-    | '/_main/projects'
     | '/_main/quizes'
     | '/_main/users'
+    | '/_main/workspaces'
     | '/_main/account/general'
-    | '/_main/projects/new'
   fileRoutesById: FileRoutesById
 }
 
@@ -349,9 +318,9 @@ export const routeTree = rootRoute
         "/_main/",
         "/_main/domains",
         "/_main/notifications",
-        "/_main/projects",
         "/_main/quizes",
         "/_main/users",
+        "/_main/workspaces",
         "/_main/account/general"
       ]
     },
@@ -376,13 +345,6 @@ export const routeTree = rootRoute
       "filePath": "_main/notifications/route.tsx",
       "parent": "/_main"
     },
-    "/_main/projects": {
-      "filePath": "_main/projects/route.tsx",
-      "parent": "/_main",
-      "children": [
-        "/_main/projects/new"
-      ]
-    },
     "/_main/quizes": {
       "filePath": "_main/quizes/route.tsx",
       "parent": "/_main"
@@ -391,13 +353,13 @@ export const routeTree = rootRoute
       "filePath": "_main/users/route.tsx",
       "parent": "/_main"
     },
+    "/_main/workspaces": {
+      "filePath": "_main/workspaces/route.tsx",
+      "parent": "/_main"
+    },
     "/_main/account/general": {
       "filePath": "_main/account/general/route.tsx",
       "parent": "/_main"
-    },
-    "/_main/projects/new": {
-      "filePath": "_main/projects/new/route.tsx",
-      "parent": "/_main/projects"
     }
   }
 }

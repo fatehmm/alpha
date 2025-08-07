@@ -2,7 +2,7 @@ import { db } from '@alpha/db';
 import * as schema from '@alpha/db/schema/auth';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { admin, openAPI } from 'better-auth/plugins';
+import { admin, openAPI, organization } from 'better-auth/plugins';
 import { eq } from 'drizzle-orm';
 
 export const auth = betterAuth({
@@ -10,7 +10,7 @@ export const auth = betterAuth({
     provider: 'pg',
     schema: schema,
   }),
-  plugins: [openAPI(), admin()],
+  plugins: [openAPI(), admin(), organization()],
   trustedOrigins: [
     'http://localhost:5173',
     'http://localhost:3000',
