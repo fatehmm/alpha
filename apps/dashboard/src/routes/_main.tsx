@@ -4,6 +4,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { authClient } from "@/lib/auth-client";
 import { AppSidebar } from "@/components/app-sidebar";
+import { GlobalSheets } from "@/components/global-sheets";
 import { AppHeader } from "@/components/layout/header";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -65,7 +66,7 @@ function MainLayout() {
               </ScrollArea>
             </div>
           </div>
-
+          <GlobalSheets />
           <Toaster />
         </div>
       </SidebarInset>

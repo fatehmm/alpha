@@ -73,7 +73,7 @@ export default function SignInForm({
         {
           onSuccess: () => {
             navigate({
-              to: "/",
+              to: `/projects`,
             });
             toast.success("Sign in successful");
           },
@@ -127,15 +127,7 @@ export default function SignInForm({
         </Button>
       </form>
 
-      <div className="mt-4 text-center">
-        <Button
-          variant="link"
-          onClick={onSwitchToSignUp}
-          className="text-indigo-600 hover:text-indigo-800"
-        >
-          Need an account? Sign Up
-        </Button>
-      </div>
+      <div className="mt-4 text-center"></div>
     </div>
   );
 }

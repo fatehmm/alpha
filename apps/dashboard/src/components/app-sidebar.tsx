@@ -5,6 +5,7 @@ import {
   IconHelpOctagon,
   IconLayoutDashboard,
   IconSettings,
+  IconUser,
   IconWorld,
 } from "@tabler/icons-react";
 import { Link } from "@tanstack/react-router";
@@ -21,15 +22,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Logo } from "./logo";
+import { TeamSwitcher } from "./layout/sidebar/team-switcher";
 import { NavUser } from "./nav-user";
 import { Badge } from "./ui/badge";
 
 const navMain = [
   {
-    title: "Services",
-    url: "services",
-    icon: IconLayoutDashboard,
+    title: "Users",
+    url: "users",
+    icon: IconUser,
   },
   {
     title: "Projects",
@@ -70,14 +71,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="mb-4">
         <SidebarMenu>
           <SidebarMenuItem className="flex justify-between">
-            <SidebarMenuButton
-              asChild
-              className="size-auto data-[slot=sidebar-menu-button]:!p-1.5 [&>svg]:size-auto"
-            >
-              <Link to="/">
-                <Logo />
-              </Link>
-            </SidebarMenuButton>
+            <TeamSwitcher
+              teams={[
+                {
+                  name: "Workspace 1",
+                  logo: IconLayoutDashboard,
+                  plan: "Pro",
+                },
+                {
+                  name: "Workspace 2",
+                  logo: IconLayoutDashboard,
+                  plan: "Pro",
+                },
+              ]}
+            />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

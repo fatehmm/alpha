@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Mail } from "lucide-react";
 
 import { Button } from "../components/ui/button";
@@ -9,15 +10,44 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
+import { authClient } from "../lib/auth-client";
 
 export const Route = createFileRoute("/confirm-email")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const session = await authClient.getSession();
+        if (session.data?.user.id) {
+          navigate({ to: "/projects" });
+        }
+      } catch (error) {
+        console.error("Session check failed:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
+  }, [navigate]);
+
   const handleGoHome = () => {
     window.location.href = "/";
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">

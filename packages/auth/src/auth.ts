@@ -2,24 +2,42 @@ import { db } from '@alpha/db';
 import * as schema from '@alpha/db/schema/auth';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { openAPI } from 'better-auth/plugins';
+import { admin, openAPI } from 'better-auth/plugins';
+import { eq } from 'drizzle-orm';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema: schema,
   }),
-  plugins: [openAPI()],
+  plugins: [openAPI(), admin()],
   trustedOrigins: [
-    'http://localhost:5173', // Vite dev server
-    'http://localhost:3000', // Server
-    'http://localhost:3001', // Alternative port
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:3001',
     process.env.CORS_ORIGIN || '',
   ].filter(Boolean),
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          const dbUsers = await db.select().from(schema.user);
+          if (dbUsers.length === 1) {
+            await db
+              .update(schema.user)
+              .set({
+                role: 'admin',
+              })
+              .where(eq(schema.user.id, dbUsers[0].id));
+          }
+        },
+      },
+    },
+  },
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    requireEmailVerification: true,
+    requireEmailVerification: false,
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, token, url }) => {

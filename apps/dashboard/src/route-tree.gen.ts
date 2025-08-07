@@ -11,26 +11,24 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as RegisterImport } from './routes/register'
+import { Route as SetupAdminImport } from './routes/setup-admin'
 import { Route as LoginImport } from './routes/login'
 import { Route as ConfirmEmailImport } from './routes/confirm-email'
 import { Route as MainImport } from './routes/_main'
-import { Route as MainServicesRouteImport } from './routes/_main/services/route'
+import { Route as MainUsersRouteImport } from './routes/_main/users/route'
 import { Route as MainQuizesRouteImport } from './routes/_main/quizes/route'
 import { Route as MainProjectsRouteImport } from './routes/_main/projects/route'
 import { Route as MainNotificationsRouteImport } from './routes/_main/notifications/route'
 import { Route as MainDomainsRouteImport } from './routes/_main/domains/route'
 import { Route as MainIndexRouteImport } from './routes/_main/index/route'
-import { Route as MainServicesNewRouteImport } from './routes/_main/services/new/route'
 import { Route as MainProjectsNewRouteImport } from './routes/_main/projects/new/route'
 import { Route as MainAccountGeneralRouteImport } from './routes/_main/account/general/route'
-import { Route as MainServicesNewServiceIdRouteImport } from './routes/_main/services/new/$serviceId/route'
 
 // Create/Update Routes
 
-const RegisterRoute = RegisterImport.update({
-  id: '/register',
-  path: '/register',
+const SetupAdminRoute = SetupAdminImport.update({
+  id: '/setup-admin',
+  path: '/setup-admin',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,9 +49,9 @@ const MainRoute = MainImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const MainServicesRouteRoute = MainServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
+const MainUsersRouteRoute = MainUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -87,12 +85,6 @@ const MainIndexRouteRoute = MainIndexRouteImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
-const MainServicesNewRouteRoute = MainServicesNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => MainServicesRouteRoute,
-} as any)
-
 const MainProjectsNewRouteRoute = MainProjectsNewRouteImport.update({
   id: '/new',
   path: '/new',
@@ -104,13 +96,6 @@ const MainAccountGeneralRouteRoute = MainAccountGeneralRouteImport.update({
   path: '/account/general',
   getParentRoute: () => MainRoute,
 } as any)
-
-const MainServicesNewServiceIdRouteRoute =
-  MainServicesNewServiceIdRouteImport.update({
-    id: '/$serviceId',
-    path: '/$serviceId',
-    getParentRoute: () => MainServicesNewRouteRoute,
-  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -137,11 +122,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterImport
+    '/setup-admin': {
+      id: '/setup-admin'
+      path: '/setup-admin'
+      fullPath: '/setup-admin'
+      preLoaderRoute: typeof SetupAdminImport
       parentRoute: typeof rootRoute
     }
     '/_main/': {
@@ -179,11 +164,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainQuizesRouteImport
       parentRoute: typeof MainImport
     }
-    '/_main/services': {
-      id: '/_main/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof MainServicesRouteImport
+    '/_main/users': {
+      id: '/_main/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof MainUsersRouteImport
       parentRoute: typeof MainImport
     }
     '/_main/account/general': {
@@ -199,20 +184,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/new'
       preLoaderRoute: typeof MainProjectsNewRouteImport
       parentRoute: typeof MainProjectsRouteImport
-    }
-    '/_main/services/new': {
-      id: '/_main/services/new'
-      path: '/new'
-      fullPath: '/services/new'
-      preLoaderRoute: typeof MainServicesNewRouteImport
-      parentRoute: typeof MainServicesRouteImport
-    }
-    '/_main/services/new/$serviceId': {
-      id: '/_main/services/new/$serviceId'
-      path: '/$serviceId'
-      fullPath: '/services/new/$serviceId'
-      preLoaderRoute: typeof MainServicesNewServiceIdRouteImport
-      parentRoute: typeof MainServicesNewRouteImport
     }
   }
 }
@@ -230,35 +201,13 @@ const MainProjectsRouteRouteChildren: MainProjectsRouteRouteChildren = {
 const MainProjectsRouteRouteWithChildren =
   MainProjectsRouteRoute._addFileChildren(MainProjectsRouteRouteChildren)
 
-interface MainServicesNewRouteRouteChildren {
-  MainServicesNewServiceIdRouteRoute: typeof MainServicesNewServiceIdRouteRoute
-}
-
-const MainServicesNewRouteRouteChildren: MainServicesNewRouteRouteChildren = {
-  MainServicesNewServiceIdRouteRoute: MainServicesNewServiceIdRouteRoute,
-}
-
-const MainServicesNewRouteRouteWithChildren =
-  MainServicesNewRouteRoute._addFileChildren(MainServicesNewRouteRouteChildren)
-
-interface MainServicesRouteRouteChildren {
-  MainServicesNewRouteRoute: typeof MainServicesNewRouteRouteWithChildren
-}
-
-const MainServicesRouteRouteChildren: MainServicesRouteRouteChildren = {
-  MainServicesNewRouteRoute: MainServicesNewRouteRouteWithChildren,
-}
-
-const MainServicesRouteRouteWithChildren =
-  MainServicesRouteRoute._addFileChildren(MainServicesRouteRouteChildren)
-
 interface MainRouteChildren {
   MainIndexRouteRoute: typeof MainIndexRouteRoute
   MainDomainsRouteRoute: typeof MainDomainsRouteRoute
   MainNotificationsRouteRoute: typeof MainNotificationsRouteRoute
   MainProjectsRouteRoute: typeof MainProjectsRouteRouteWithChildren
   MainQuizesRouteRoute: typeof MainQuizesRouteRoute
-  MainServicesRouteRoute: typeof MainServicesRouteRouteWithChildren
+  MainUsersRouteRoute: typeof MainUsersRouteRoute
   MainAccountGeneralRouteRoute: typeof MainAccountGeneralRouteRoute
 }
 
@@ -268,7 +217,7 @@ const MainRouteChildren: MainRouteChildren = {
   MainNotificationsRouteRoute: MainNotificationsRouteRoute,
   MainProjectsRouteRoute: MainProjectsRouteRouteWithChildren,
   MainQuizesRouteRoute: MainQuizesRouteRoute,
-  MainServicesRouteRoute: MainServicesRouteRouteWithChildren,
+  MainUsersRouteRoute: MainUsersRouteRoute,
   MainAccountGeneralRouteRoute: MainAccountGeneralRouteRoute,
 }
 
@@ -278,33 +227,29 @@ export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/confirm-email': typeof ConfirmEmailRoute
   '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
+  '/setup-admin': typeof SetupAdminRoute
   '/': typeof MainIndexRouteRoute
   '/domains': typeof MainDomainsRouteRoute
   '/notifications': typeof MainNotificationsRouteRoute
   '/projects': typeof MainProjectsRouteRouteWithChildren
   '/quizes': typeof MainQuizesRouteRoute
-  '/services': typeof MainServicesRouteRouteWithChildren
+  '/users': typeof MainUsersRouteRoute
   '/account/general': typeof MainAccountGeneralRouteRoute
   '/projects/new': typeof MainProjectsNewRouteRoute
-  '/services/new': typeof MainServicesNewRouteRouteWithChildren
-  '/services/new/$serviceId': typeof MainServicesNewServiceIdRouteRoute
 }
 
 export interface FileRoutesByTo {
   '/confirm-email': typeof ConfirmEmailRoute
   '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
+  '/setup-admin': typeof SetupAdminRoute
   '/': typeof MainIndexRouteRoute
   '/domains': typeof MainDomainsRouteRoute
   '/notifications': typeof MainNotificationsRouteRoute
   '/projects': typeof MainProjectsRouteRouteWithChildren
   '/quizes': typeof MainQuizesRouteRoute
-  '/services': typeof MainServicesRouteRouteWithChildren
+  '/users': typeof MainUsersRouteRoute
   '/account/general': typeof MainAccountGeneralRouteRoute
   '/projects/new': typeof MainProjectsNewRouteRoute
-  '/services/new': typeof MainServicesNewRouteRouteWithChildren
-  '/services/new/$serviceId': typeof MainServicesNewServiceIdRouteRoute
 }
 
 export interface FileRoutesById {
@@ -312,17 +257,15 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteWithChildren
   '/confirm-email': typeof ConfirmEmailRoute
   '/login': typeof LoginRoute
-  '/register': typeof RegisterRoute
+  '/setup-admin': typeof SetupAdminRoute
   '/_main/': typeof MainIndexRouteRoute
   '/_main/domains': typeof MainDomainsRouteRoute
   '/_main/notifications': typeof MainNotificationsRouteRoute
   '/_main/projects': typeof MainProjectsRouteRouteWithChildren
   '/_main/quizes': typeof MainQuizesRouteRoute
-  '/_main/services': typeof MainServicesRouteRouteWithChildren
+  '/_main/users': typeof MainUsersRouteRoute
   '/_main/account/general': typeof MainAccountGeneralRouteRoute
   '/_main/projects/new': typeof MainProjectsNewRouteRoute
-  '/_main/services/new': typeof MainServicesNewRouteRouteWithChildren
-  '/_main/services/new/$serviceId': typeof MainServicesNewServiceIdRouteRoute
 }
 
 export interface FileRouteTypes {
@@ -331,48 +274,42 @@ export interface FileRouteTypes {
     | ''
     | '/confirm-email'
     | '/login'
-    | '/register'
+    | '/setup-admin'
     | '/'
     | '/domains'
     | '/notifications'
     | '/projects'
     | '/quizes'
-    | '/services'
+    | '/users'
     | '/account/general'
     | '/projects/new'
-    | '/services/new'
-    | '/services/new/$serviceId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/confirm-email'
     | '/login'
-    | '/register'
+    | '/setup-admin'
     | '/'
     | '/domains'
     | '/notifications'
     | '/projects'
     | '/quizes'
-    | '/services'
+    | '/users'
     | '/account/general'
     | '/projects/new'
-    | '/services/new'
-    | '/services/new/$serviceId'
   id:
     | '__root__'
     | '/_main'
     | '/confirm-email'
     | '/login'
-    | '/register'
+    | '/setup-admin'
     | '/_main/'
     | '/_main/domains'
     | '/_main/notifications'
     | '/_main/projects'
     | '/_main/quizes'
-    | '/_main/services'
+    | '/_main/users'
     | '/_main/account/general'
     | '/_main/projects/new'
-    | '/_main/services/new'
-    | '/_main/services/new/$serviceId'
   fileRoutesById: FileRoutesById
 }
 
@@ -380,14 +317,14 @@ export interface RootRouteChildren {
   MainRoute: typeof MainRouteWithChildren
   ConfirmEmailRoute: typeof ConfirmEmailRoute
   LoginRoute: typeof LoginRoute
-  RegisterRoute: typeof RegisterRoute
+  SetupAdminRoute: typeof SetupAdminRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   MainRoute: MainRouteWithChildren,
   ConfirmEmailRoute: ConfirmEmailRoute,
   LoginRoute: LoginRoute,
-  RegisterRoute: RegisterRoute,
+  SetupAdminRoute: SetupAdminRoute,
 }
 
 export const routeTree = rootRoute
@@ -403,7 +340,7 @@ export const routeTree = rootRoute
         "/_main",
         "/confirm-email",
         "/login",
-        "/register"
+        "/setup-admin"
       ]
     },
     "/_main": {
@@ -414,7 +351,7 @@ export const routeTree = rootRoute
         "/_main/notifications",
         "/_main/projects",
         "/_main/quizes",
-        "/_main/services",
+        "/_main/users",
         "/_main/account/general"
       ]
     },
@@ -424,8 +361,8 @@ export const routeTree = rootRoute
     "/login": {
       "filePath": "login.tsx"
     },
-    "/register": {
-      "filePath": "register.tsx"
+    "/setup-admin": {
+      "filePath": "setup-admin.tsx"
     },
     "/_main/": {
       "filePath": "_main/index/route.tsx",
@@ -450,12 +387,9 @@ export const routeTree = rootRoute
       "filePath": "_main/quizes/route.tsx",
       "parent": "/_main"
     },
-    "/_main/services": {
-      "filePath": "_main/services/route.tsx",
-      "parent": "/_main",
-      "children": [
-        "/_main/services/new"
-      ]
+    "/_main/users": {
+      "filePath": "_main/users/route.tsx",
+      "parent": "/_main"
     },
     "/_main/account/general": {
       "filePath": "_main/account/general/route.tsx",
@@ -464,17 +398,6 @@ export const routeTree = rootRoute
     "/_main/projects/new": {
       "filePath": "_main/projects/new/route.tsx",
       "parent": "/_main/projects"
-    },
-    "/_main/services/new": {
-      "filePath": "_main/services/new/route.tsx",
-      "parent": "/_main/services",
-      "children": [
-        "/_main/services/new/$serviceId"
-      ]
-    },
-    "/_main/services/new/$serviceId": {
-      "filePath": "_main/services/new/$serviceId/route.tsx",
-      "parent": "/_main/services/new"
     }
   }
 }
