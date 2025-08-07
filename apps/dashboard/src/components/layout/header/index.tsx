@@ -1,7 +1,5 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { DocsButton } from "./components/docs-button";
-import { Feedback } from "./components/feedback";
 import { ModeSwitcher } from "./components/mode-toggle";
 
 export function AppHeader() {
@@ -16,8 +14,8 @@ export function AppHeader() {
         <h1 className="text-base font-medium">Documents</h1>
         <div className="ml-auto flex items-center gap-2">
           <ModeSwitcher />
-          <Feedback />
-          <DocsButton />
+          {/* <Feedback />
+          <DocsButton /> */}
         </div>
       </div>
     </header>

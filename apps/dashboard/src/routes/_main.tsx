@@ -67,7 +67,7 @@ function MainLayout() {
             </div>
           </div>
           <GlobalSheets />
-          <Toaster />
+          <Toaster richColors />
         </div>
       </SidebarInset>
     </SidebarProvider>

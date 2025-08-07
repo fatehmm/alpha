@@ -1,7 +1,8 @@
 import { auth } from '@alpha/auth';
 import { db, schema } from '@alpha/db';
+import { eq } from 'drizzle-orm';
 import { z } from 'zod';
-import { publicProcedure, router } from '../lib/trpc';
+import { adminProcedure, publicProcedure, router } from '../lib/trpc';
 
 const createUserSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -26,5 +27,10 @@ export const userRouter = router({
     });
 
     return response.user;
+  }),
+
+  deleteUser: adminProcedure.input(z.object({ id: z.string() })).mutation(async ({ input }) => {
+    await db.delete(schema.auth.user).where(eq(schema.auth.user.id, input.id));
+    return { success: true };
   }),
 });

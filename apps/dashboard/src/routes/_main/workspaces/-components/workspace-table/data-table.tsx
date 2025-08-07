@@ -14,21 +14,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { createColumns, User } from "./columns";
+import { createColumns, Workspace } from "./columns";
 
-interface UserDataTableProps {
-  data: User[];
-  onDelete: (userId: string) => void;
-  onEditPermissions: (userId: string) => void;
+interface WorkspaceDataTableProps {
+  data: Workspace[];
+  onDelete: (workspaceId: string) => void;
+  onEditPermissions: (workspaceId: string) => void;
   isDeleting: boolean;
 }
 
-export function UserDataTable({
+export function WorkspaceDataTable({
   data,
   onDelete,
   onEditPermissions,
   isDeleting,
-}: UserDataTableProps) {
+}: WorkspaceDataTableProps) {
   const columns = createColumns({ onDelete, onEditPermissions, isDeleting });
   const table = useReactTable({
     data,

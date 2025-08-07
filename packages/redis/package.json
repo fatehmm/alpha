@@ -2,6 +2,9 @@
   "name": "@alpha/redis",
   "version": "1.0.0",
   "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
     "ioredis": "^5.7.0"
   }

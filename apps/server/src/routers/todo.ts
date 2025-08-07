@@ -1,5 +1,6 @@
 import { db } from '@alpha/db';
 import { todo } from '@alpha/db/schema/todo';
+import { redis } from '@alpha/redis';
 import { eq } from 'drizzle-orm';
 import z from 'zod';
 import { publicProcedure, router } from '../lib/trpc';
@@ -10,9 +11,7 @@ export const todoRouter = router({
   }),
 
   create: publicProcedure.input(z.object({ text: z.string().min(1) })).mutation(async ({ input }) => {
-    return await db.insert(todo).values({
-      text: input.text,
-    });
+    return await redis.set('todo', input.text);
   }),
 
   toggle: publicProcedure.input(z.object({ id: z.number(), completed: z.boolean() })).mutation(async ({ input }) => {

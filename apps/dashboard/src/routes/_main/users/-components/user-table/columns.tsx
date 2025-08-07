@@ -2,9 +2,18 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { MoreHorizontal, Shield, Trash2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -21,7 +30,17 @@ export type User = {
   updatedAt: string;
 };
 
-export const columns: ColumnDef<User>[] = [
+interface UserTableProps {
+  onDelete: (userId: string) => void;
+  onEditPermissions: (userId: string) => void;
+  isDeleting: boolean;
+}
+
+export const createColumns = ({
+  onDelete,
+  onEditPermissions,
+  isDeleting,
+}: UserTableProps): ColumnDef<User>[] => [
   {
     accessorKey: "name",
     header: "User",
@@ -160,6 +179,43 @@ export const columns: ColumnDef<User>[] = [
           <span className="text-muted-foreground text-sm">Invalid date</span>
         );
       }
+    },
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={() => {
+                console.log("Edit permissions for user:", user);
+                onEditPermissions(user.id);
+              }}
+              className="gap-2"
+            >
+              <Shield className="h-4 w-4" />
+              Edit Permissions
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => onDelete(user.id)}
+              disabled={isDeleting}
+              className="gap-2 bg-red-600 text-white hover:bg-red-700 focus:bg-red-700 focus:text-white"
+            >
+              <Trash2 className="h-4 w-4 text-white" />
+              Delete User
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
   },
 ];
